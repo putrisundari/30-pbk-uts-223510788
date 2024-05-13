@@ -1,53 +1,89 @@
+<script>
+let id = 0
+
+export default {
+  data() {
+    return {
+      newTodo: '',
+      hideCompleted: false,
+      todos: [
+        { id: id++, text: 'Basis Data', done: true },
+        { id: id++, text: 'jaringan Komputer', done: true },
+        { id: id++, text: 'Struktur Data', done: false }
+      ],
+      editingTodo: null,
+      editedTodoText: ''
+    }
+  },
+  computed: {
+    filteredTodos() {
+      return this.hideCompleted
+        ? this.todos.filter((t) => !t.done)
+        : this.todos
+    }
+  },
+  methods: {
+    addTodo() {
+      this.todos.push({ id: id++, text: this.newTodo, done: false })
+      this.newTodo = ''
+    },
+    removeTodo(todo) {
+      this.todos = this.todos.filter((t) => t !== todo)
+    },
+    editTodo(todo) {
+      this.editingTodo = todo
+      this.editedTodoText = todo.text
+    },
+    cancelEdit() {
+      this.editingTodo = null
+      this.editedTodoText = ''
+    },
+    saveEdit(todo) {
+      todo.text = this.editedTodoText
+      this.cancelEdit()
+    }
+  }
+}
+</script>
+
 <template>
-  <div>
-    <ActivityTable :activities="activities" @toggle-completion="toggleCompletion" @remove-activity="removeActivity" />
-    <h2>Student Activity Form</h2>
-    <form @submit.prevent="submitForm">
-      <div>
-        <label for="activityName">Activities Name :</label>
-        <input type="text" id="activityName" v-model="activityName" required>
-      </div>
-      <div>
-        <label for="activityDate">Activities Date :</label>
-        <input type="date" id="activityDate" v-model="activityDate" required>
-      </div>
-      <button type="submit">List Of Activities </button>
-    </form>
+   <div class="container">
+    <div class="konten">
+      <h1>To-Do List My Course</h1>
+      <hr />
+      <form @submit.prevent="addTodo">
+        <input class="input" v-model="newTodo" />
+        <button>tambahkan Mata Kuliah</button>
+      </form>
+      <ul>
+        <li v-for="todo in filteredTodos" :key="todo.id">
+          <div class="list">
+            <input type="checkbox" v-model="todo.done" />
+            <span :class="{ done: todo.done }" v-if="editingTodo !== todo">{{ todo.text }}</span>
+            <input v-else v-model="editedTodoText" @keyup.enter="saveEdit(todo)" @keyup.esc="cancelEdit()" />
+            <button @click="removeTodo(todo)">X</button>
+            <button v-if="editingTodo !== todo" @click="editTodo(todo)">Edit</button>
+            <button v-else @click="saveEdit(todo)">Save</button>
+            <button v-if="editingTodo === todo" @click="cancelEdit()">Cancel</button>
+          </div>
+        </li>
+      </ul>
+      <button @click="hideCompleted = !hideCompleted">
+        {{ hideCompleted ? 'Show all' : 'Hide completed' }}
+      </button>
+      <p>Come on, check your to-do list. so you don't miss anything!!</p>
+    </div>
   </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-import ActivityTable from './components/ActivityTable.vue';
 
-export default {
-  components: {
-    ActivityTable
-  },
-  setup() {
-    const activities = ref([]);
-    const activityName = ref('');
-    const activityDate = ref('');
-
-    const submitForm = () => {
-      activities.value.push({
-        name: activityName.value,
-        date: activityDate.value,
-        completed: false
-      });
-      activityName.value = '';
-      activityDate.value = '';
-    };
-
-    const toggleCompletion = index => {
-      activities.value[index].completed = !activities.value[index].completed;
-    };
-
-    const removeActivity = index => {
-      activities.value.splice(index, 1);
-    };
-
-    return { activities, activityName, activityDate, submitForm, toggleCompletion, removeActivity };
-  }
-};
-</script>
+<style>
+.done {
+  text-decoration: line-through;
+}
+button {
+  color: rgb(181, 21, 40);
+  background-color: pink; /* Add this line to make the button white */
+  border: 2px solid rgb(146, 24, 57); /* Add this line to create a thick white border */
+}
+</style>
