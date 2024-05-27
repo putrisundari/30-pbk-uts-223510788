@@ -6,20 +6,20 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to right bottom, olivedrab, #eee8aa, #ffffff);
+  background: linear-gradient(to right bottom, rgb(146, 76, 124), #eee8aa, #ffffff);
 }
 
 .container {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 20px rgba(193, 87, 143, 0.2);
   padding: 30px;
   width: 80%;
   max-width: 600px;
 }
 
 h1 {
-  color: red;
+  color: rgb(141, 26, 64);
   text-align: center;
   margin-bottom: 20px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@ form {
 label {
   font-weight: bold;
   margin-bottom: 5px;
-  color: ;
+  color: white;
 }
 
 input[type="text"],
@@ -48,7 +48,7 @@ button {
 }
 
 button {
-  background-color:olivedrab;
+  background-color:palevioletred;
   color: #fff;
   border: none;
   cursor: pointer;
